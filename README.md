@@ -25,11 +25,16 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 import numpy as np
 
-data = pd.read_csv('/content/OnionTimeSeries - Sheet1 (1).csv')
+from google.colab import drive
+drive.mount('/content/drive')
+
+data = pd.read_csv('/content/csv/AMZN.csv')
 
 data['Date'] = pd.to_datetime(data['Date'])
 
-data['Min'] = data['Min'].fillna(data['Min'].mean())
+# Check the column names and replace 'Min' with the correct name
+print(data.columns)  # Print the available columns to verify
+data['Min'] = data['Low'].fillna(data['Low'].mean()) # Assuming 'Low' is the correct column
 
 X = np.array(data.index).reshape(-1, 1)
 y = data['Min']
@@ -44,6 +49,7 @@ X_poly = poly.fit_transform(X)
 poly_regressor = LinearRegression()
 poly_regressor.fit(X_poly, y)
 y_pred_poly = poly_regressor.predict(X_poly)
+
 
 plt.figure(figsize=(35, 5))
 
@@ -77,7 +83,7 @@ plt.tight_layout()  # Adjust layout for proper spacing
 # Show the plot
 plt.show()
 
-pplt.figure(figsize=(35, 5))
+plt.figure(figsize=(35, 5))
 
 # Third subplot for the first 100 data points (actual price and polynomial trend)
 plt.subplot(1, 3, 3)
@@ -93,15 +99,20 @@ plt.tight_layout()  # Adjust layout for proper spacing
 
 # Show the plot
 plt.show()
-
 ```
 ### OUTPUT
+
+![Screenshot 2024-09-23 110737](https://github.com/user-attachments/assets/61fcf1d1-b6e4-4d35-a624-a9430b7fd315)
+
+
 #### A - LINEAR TREND ESTIMATION
-![Untitled](https://github.com/user-attachments/assets/e3fda039-83cc-4498-92a5-a858f4520d68)
+
+![Screenshot 2024-09-23 110757](https://github.com/user-attachments/assets/44bb02d8-3732-4c0f-9f21-4c16d25ba88c)
 
 
 #### B- POLYNOMIAL TREND ESTIMATION
-![Untitled](https://github.com/user-attachments/assets/e644e931-1d72-4784-b691-a179ed67b7fd)
+![Screenshot 2024-09-23 110809](https://github.com/user-attachments/assets/89d63c25-e22e-45fd-b846-40a4a60dd484)
+
 
 
 
